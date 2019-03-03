@@ -13,13 +13,34 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
+
+ods listing style=listing;
+ods graphics / width=8in height=8in;
+title1
+'Question: What is the distribution of days on drug and duration of adverse 
+ reaction for placebo and non placebo patients?';
+
+title2
+'Rationale: This would help formulate more questions around how some patients 
+ react whether age, weight and/or sex could be a factor.';
+
+footnote1
+'Here we can see that majority of the placebo and drug groups stay within a
+ one to one days on drugs and reaction but there are a few that have a high
+ adverse reaction for such a low amount of time on the drug or placebo';
+
+footnote2
+'I find this to be significant because it is not limited to just the drug 
+ but also appears with the placebo and I would like to know what factors
+ might play a part within these individuals to cause such a reaction.';
+
+footnote3
+'I think it might have to do with ones physical measurements either their
+ weight, age or perhaps their sex. Perhaps there is a sweet spot that 
+ these individuals fall under that could help eliminate outliers in 
+ further studies.'
+
 *
-Question: What is the distribution of days on drug and duration of adverse 
-reaction for placebo and non placebo patients?
-
-Rationale: This would help formulate more questions around how some patients 
-react whether age, weight and/or sex could be a factor.
-
 Note: This compares the column Day_On_Drug and ADR_Duration with 
 Treatment_Group from Placebo and Treatment.
 
@@ -28,24 +49,89 @@ Day_on_Drug have 0 values and very high values that might skew our data.
 ;
 
 proc sgplot
-  data = treatment_placebo_v1
+  data = adverser_analytical_file
   ;
-    vbox days_on_drugs / category = treatment_group
-    vbox adr_duration / category = treatment_group
-    ;
+  scatter X = day_on_drug Y = adr_duration / group = treatment_group
+  ;
 run;
+title;
+footnote;
+
+*******************************************************************************;
+* Research Question Analysis Starting Point;
+*******************************************************************************;
+
+title1
+'Question: Is the duration of the reaction correlated with the age, sex, 
+ weight, and day on drug of the patient?';
+
+title2
+'Rationale: Would like to see if the severity and duration align with the same
+ factors that are significant.';
+
+footnote1
+'Here we see the parameter estimates table and find that day on drug is the
+ only significant factor within our regression test.'
+
+footnote2
+'I find this to be interesting since from our initial distribution we saw 
+ that some people would have a very adverse reaction within just a couple
+ of days while others would have a low reaction from a long usage time.'
+
+footnote3
+'I am not sure what to make of these findings but I hope to see if our
+ other test will align with similar findings.'
+
+*
+Note: This compares the column ADR_duration from Placebo and Treatment to the 
+column Age, Weight, and Sex from Patient_Info
+
+Limitations: Again our issue might be based on how common one severity is 
+versus the other ones which might prove to lack our correlation with soeme
+of the variables.
+;
+ods html close;
+ods listing close;
+proc glmmod 
+        data = adverser_analytical_file
+        outdesign = adverser_analytical_file_2
+        outparm= GLMParm
+    ;
+    class sex;
+    model adr_duration =  day_on_drug age weight sex;
+run;
+ods html;
 
 
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
+
+
+title1
+'Question: Is there a correlation with Severity of reaction from age, weight,
+and sex?';
+
+title2
+'Rationale: This would help identify any significant factors that contribute to 
+the severity of the drug reaction.';
+
+footnote1
+'Here we see that a moderate reaction is much more significant than a mild
+ reaction and yet the days on drugs is not as significant as opposed to
+ our last regression model, yet weight is a factor.';
+
+footnote2
+'I find this to be significant because this lines up more with our graph
+ showing that the amount of time on the drug or placebo does not correlate
+ with how long their reaction is.';
+
+footnote3
+'It is interesting to me why weight is a factor in the reaction but not the
+ duration. Could this be due to nutrition and if so is there a weight range
+ that would cause a certain type of reaction?';
+
 *
-Question: Is there a correlation with Severity of reaction from age, weight,
-and sex?
-
-Rationale: This would help identify any significant factors that contribute to 
-the severity of the drug reaction.
-
 Note: This compares the column ADR_Severity from Placebo and Treatment to the 
 column Age, Weight, and Sex from Patient_Info.
 
@@ -54,72 +140,12 @@ accurate some of our results might be due to our lack of variety in
 ADR_Severity
 ;
 
-proc glmmod 
-  data = 
-    patient_treatment_placebo_v1
-  outdesign=
-    patient_treatment_placebo_v1_2
-  outparm=
-    GLMParm
-    ;
-   class 
-    adr_severity
-    ;
-   model 
-    adr_severity =  age weight sex;
-run
-;
-
-
-proc reg data =
-   patient_treatment_placebo_v1_2
-  ;
-  DummyVars: model int_rate = COL2-COL6
-  ;
-  ods select ParameterEstimates;
-  quit
-  ;
-
-*******************************************************************************;
-* Research Question Analysis Starting Point;
-*******************************************************************************;
-*
-Question: Is the duration of the reaction correlated with the age, sex, and
-weight of the patient?
-
-Rationale: Would like to see if the severity and duration align with the same
-factors that are significant.
-
-Note: This compares the column ADR_duration from Placebo and Treatment to the 
-column Age, Weight, and Sex from Patient_Info
-
-Limitations: Again our issue might be based on how common one severity is 
-versus the other ones which might prove to lack our correlation with soeme
-of the variables.
-;
-
-proc glmmod 
-  data = 
-    patient_treatment_placebo_v1
-  outdesign=
-    patient_treatment_placebo_v1_2
-  outparm=
-    GLMParm
-    ;
-   class 
-    adr_duration
-    ;
-   model 
-    adr_duration =  age weight sex;
-run
-;
-
-
-proc reg data =
-   patient_treatment_placebo_v1_2
-  ;
-  DummyVars: model adr_duration = COL2-COL6
-  ;
-  ods select ParameterEstimates;
-  quit
-  ;
+proc logistic
+			data = adverser_analytical_file
+	;
+	class sex;
+	model adr_severity = age weight sex day_on_drug;
+	ods select ParameterEstimates;
+run;
+title;
+footnote;

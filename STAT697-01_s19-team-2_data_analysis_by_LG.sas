@@ -60,8 +60,8 @@ footnote;
 *******************************************************************************;
 
 title1
-'[Question 2] Does the duration on drug has significant impact on 
-adverse severity?';
+'[Question 2] Does the duration on drug has significant impact on adverse 
+severity?';
 
 title2 justify=left
 'Rationale: This could help us to identify whether the reported adverse 
@@ -107,8 +107,8 @@ footnote;
 *******************************************************************************;
 
 title1
-'[Question 3] Was the adverse reaction times differ significantly 
-between two groups of patients? ';
+'[Question 3] Was the adverse reaction times differ significantly between two 
+groups of patients? ';
 
 title2 justify=left 
 'Rationale: This could help us to figure out whether the duration of adverse 
