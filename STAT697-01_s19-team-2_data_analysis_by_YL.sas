@@ -22,12 +22,12 @@ different groups?'
 title2 justify = left
 "Rationale: This would help to decide if the study randomized the choices of 
 treatment. In other words, we want to be sure that the the grouping wasn't 
-biased."
+ biased."
 ;
 
 footnote1 justify = left
-'The age and weight seem to have similar values, which indicates that there is
-no bias when assigning groups.';
+'The age and weight seem to have similar values, which indicates that there is 
+ no bias when assigning groups.';
 
 *
 Note: This compares the age, weight, race columns in the patient_info dataset.
@@ -46,6 +46,24 @@ proc sql;
     group by treatment_group
     ;
 quit;
+
+footnote1 justify = left
+"The box plots showed similar distributions for age of both placebo and drug
+ treatment group."
+;
+proc sgplot
+	data = adverser_analytical_file;
+	vbox age / category = treatment_group;
+run;
+
+footnote1 justify = left
+"The box plots showed similar distributions for weight of both placebo and drug
+ treatment group."
+;
+proc sgplot
+	data = adverser_analytical_file;
+	vbox weight / category = treatment_group;
+run;
 title;
 footnote;
 
@@ -85,6 +103,21 @@ proc sql;
     group by treatment_group
     ;
 quit;
+
+footnote1 justify = left
+'A two-sample t test is used to compare if the adverse durations are
+ significantly different for two groups.'
+;
+
+footnote2 justify = left
+'A p value smaller than 0.05 indicates that the adverse durations are different
+ for two groups.'
+;
+proc ttest 
+	data = adverser_analytical_file;
+	class treatment_group;
+	var adr_duration;
+run;
 title;
 footnote;
 
@@ -124,5 +157,11 @@ proc sql;
     group by race
     ;
 quit;
+
+proc glm data = adverser_analytical_file;
+	class treatment_group sex race;
+	model adr_duration = treatment_group sex race;
+run;
+
 title;
 footnote;
