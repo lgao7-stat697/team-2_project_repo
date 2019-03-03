@@ -49,9 +49,9 @@ Day_on_Drug have 0 values and very high values that might skew our data.
 ;
 
 proc sgplot
-  data = adverser_analytical_file
+      data = adverser_analytical_file
   ;
-  scatter X = day_on_drug Y = adr_duration / group = treatment_group
+      scatter X = day_on_drug Y = adr_duration / group = treatment_group
   ;
 run;
 title;
@@ -92,13 +92,14 @@ of the variables.
 ;
 ods html close;
 ods listing close;
-proc glmmod 
-        data = adverser_analytical_file
-        outdesign = adverser_analytical_file_2
-        outparm= GLMParm
+
+proc glmmod
+      data = adverser_analytical_file
+      outdesign = adverser_analytical_file_2
+      outparm= GLMParm
     ;
-    class sex;
-    model adr_duration =  day_on_drug age weight sex;
+      class sex;
+      model adr_duration =  day_on_drug age weight sex;
 run;
 ods html;
 
@@ -141,11 +142,11 @@ ADR_Severity
 ;
 
 proc logistic
-			data = adverser_analytical_file
+      data = adverser_analytical_file
 	;
-	class sex;
-	model adr_severity = age weight sex day_on_drug;
-	ods select ParameterEstimates;
+      class sex;
+      model adr_severity = age weight sex day_on_drug;
+      ods select ParameterEstimates;
 run;
 title;
 footnote;
