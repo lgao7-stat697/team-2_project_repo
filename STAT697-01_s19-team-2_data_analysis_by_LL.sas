@@ -143,7 +143,7 @@ ADR_Severity
 
 proc logistic
       data = adverser_analytical_file
-	;
+      ;
       class sex;
       model adr_severity = age weight sex day_on_drug;
       ods select ParameterEstimates;
