@@ -15,7 +15,7 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 
 title1
-'[Research Question 1] What is the distribution of sex between groups?'; 
+'[Question 1] What is the distribution of sex between groups?'; 
 
 title2 justify=left
 'Rationale: This would help to find out whether the distribution between groups 
@@ -60,8 +60,8 @@ footnote;
 *******************************************************************************;
 
 title1
-'[Research Question 2] Does the duration on drug has significant impact on 
-adverse severity?';
+'[Question 2] Does the duration on drug has significant impact on adverse 
+severity?';
 
 title2 justify=left
 'Rationale: This could help us to identify whether the reported adverse 
@@ -107,8 +107,8 @@ footnote;
 *******************************************************************************;
 
 title1
-'[Research Question 3] Was the adverse reaction times differ significantly 
-between two groups of patients? ';
+'[Question 3] Was the adverse reaction times differ significantly between two 
+groups of patients? ';
 
 title2 justify=left 
 'Rationale: This could help us to figure out whether the duration of adverse 
