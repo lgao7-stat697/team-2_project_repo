@@ -53,6 +53,12 @@ proc sgplot
       ;
       scatter X = day_on_drug Y = adr_duration / group = treatment_group
       ;
+      xaxis label = 'Number of Days On Drug'
+      ;
+      yaxis label = 'Number of Days for Adverse Reaction'
+      ;
+      keylegend /title = "Treatment Group"
+      ;
 run;
 title;
 footnote;
@@ -103,6 +109,16 @@ proc glmmod
 run;
 ods html;
 
+proc reg 
+      data = adverser_analytical_file_2
+      ;
+      DummyVars: model adr_duration = COL2-COL6
+      ;
+      ods select ParameterEstimates
+      ;
+quit;
+title;
+footnote;
 
 *******************************************************************************;
 * Research Question Analysis Starting Point;
