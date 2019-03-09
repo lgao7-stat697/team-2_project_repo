@@ -46,6 +46,14 @@ Treatment_Group from Placebo and Treatment.
 
 Limitations: Some limiations might include that our adr_duration and 
 Day_on_Drug have 0 values and very high values that might skew our data.
+
+Methodology: Here I decided to use a scatterplot in order to compare
+both the number of days on the drug with how long the reaction lasts
+to see any correlation between the two.
+
+Followup Steps: A possible followup would be to find a way to panel 
+the plots or possibly do a regresion line to try and gain better
+insights.
 ;
 
 proc sgplot
@@ -95,6 +103,13 @@ column Age, Weight, and Sex from Patient_Info
 Limitations: Again our issue might be based on how common one severity is 
 versus the other ones which might prove to lack our correlation with soeme
 of the variables.
+
+Methodology: Here I created my categorical variable into a numeric 
+binary variable with a dummy variable in order set the conditions for 
+my regression.
+
+Followup Steps: I think I would want to explore more on my model
+or possibly involve interaction within my model.
 ;
 ods html close;
 ods listing close;
@@ -154,7 +169,15 @@ column Age, Weight, and Sex from Patient_Info.
 
 Limitations: Might have a limitation for our character variable and how 
 accurate some of our results might be due to our lack of variety in 
-ADR_Severity
+ADR_Severity.
+
+Methodology: Here we wanted to check regression on another model to 
+see how the variables interact with this response and correlate the 
+differences of significant variables within this model and the other.
+
+Followup Steps: I would probably do a similar approach with adding more
+variables into my model and seeing how more efficient my model can be
+with different tuning.
 ;
 
 proc logistic
