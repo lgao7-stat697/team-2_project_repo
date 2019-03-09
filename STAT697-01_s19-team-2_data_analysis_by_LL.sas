@@ -109,6 +109,16 @@ proc glmmod
 run;
 ods html;
 
+proc reg 
+      data = adverser_analytical_file_2
+      ;
+      DummyVars: model adr_duration = COL2-COL6
+      ;
+      ods select ParameterEstimates
+      ;
+quit;
+title;
+footnote;
 
 *******************************************************************************;
 * Research Question Analysis Starting Point;
