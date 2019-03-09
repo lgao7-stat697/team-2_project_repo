@@ -53,6 +53,12 @@ proc sgplot
       ;
       scatter X = day_on_drug Y = adr_duration / group = treatment_group
       ;
+      xaxis label = 'Number of Days On Drug'
+      ;
+      yaxis label = 'Number of Days for Adverse Reaction'
+      ;
+      keylegend /title = "Treatment Group"
+      ;
 run;
 title;
 footnote;
