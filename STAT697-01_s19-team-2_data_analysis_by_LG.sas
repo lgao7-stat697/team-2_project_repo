@@ -26,24 +26,25 @@ footnote1 justify=left
 *
 Note: This compares the sex columns in the original patient_info dataset.
 
-Limitations: Values of "Adverser reaction" equal to zero should be excluded from the analysis, since they are potentially missing data values.
+Limitations: Values of "Adverser reaction" equal to zero should be excluded 
+from the analysis, since they are potentially missing data values.
+
+Methodology: Use proc report to create the summary table.
+
+Followup Steps: Clean up values in order to filter out any possible illegal 
+values. Display a visual summary (boxplot) to illustrate the difference
+between genders in groups.
 ;
 
-proc sql; 
-	select 
-		 treatment_group
-		,sex
-		,count(*) as row_count_sex
-	from
-		Adverser_analytical_file
-	group by
-		 treatment_group
-		,sex
-	having 
-		row_count_sex > 0
+proc report data=Adverser_analytical_file;
+	columns
+		treatment_group
+		sex
 	;
-quit;
-
+	define treatment_group / group;
+	define sex / across;
+run;
+	
 * clear titles/footnotes;
 title;
 footnote;
@@ -60,22 +61,20 @@ title2 justify=left
 'Rationale: This could help us to identify whether the reported adverse severity were based on the treatment itself or/and the duration on drug.';
 
 footnote1 justify=left
-'Based on the box-plot we could see that the average day on drug for both patient groups are similar.';
+'Since p-value=0.5804 > alpha=0.05, failed to conclude that the duration on drug has significant impact on adverse severity; treatment group as factor, with p-value=0.4411 has no significant impact on adverse severity as well.';
 
 *
-Note: This compares columns Day_on_drug, and severity in placebo and treatment datasets.
+Note: This compares columns Day_on_drug, and severity in placebo and 
+treatment datasets.
 
-Limitations: Values of "Adverse severity" equal to zero should be excluded from the analysis, since they are potentially missing data values.
+Limitations: Values of "Adverse severity" equal to zero should be excluded 
+from the analysis, since they are potentially missing data values.
 
 Methodology: Use proc logistic to perform a logistic regression analysis.
+
+Followup Steps: Consider other factors that might affect patiens reactions
+on drugs (or placebo)
 ;
-
-proc sgplot data=Adverser_analytical_file;
-	vbox day_on_drug / category = treatment_group;
-run;
-
-footnote2 justify=left
-'Since p-value=0.5804 > alpha=0.05, failed to conclude that the duration on drug has significant impact on adverse severity; treatment group as factor, with p-value=0.4411 has no significant impact on adverse severity as well.';
 
 proc logistic data=Adverser_analytical_file;
 	class treatment_group;
@@ -99,11 +98,18 @@ title2 justify=left
 'Rationale: This could help us to figure out whether the duration of adverse reaction has impact (other than treatments effect) between two groups.';
 
 *
-Note: This compares the columns ADR_DURATION from adverse_reaction and severity from placebo and treatment.
+Note: This compares the columns ADR_DURATION from adverse_reaction and 
+severity from placebo and treatment.
 
-Limitations: Values of "treatments (groups of patients)" equal to zero should be excluded from the analysis, since they are potentially missing data values. 
+Limitations: Values of "treatments (groups of patients)" equal to zero should
+be excluded from the analysis, since they are potentially missing data values. 
 
 Methodology: Use proc glm to perform the regression analysis.
+
+Followup Steps: Since the F value of the treatment group has significant p-value
+indicating there is a different in ADR duration in treatment vs placebo groups. 
+We would like to conduct an one-sided hypothesis analysis to find out how was 
+the difference between groups.
 ;
 
 footnote1 justify=left
@@ -118,6 +124,11 @@ proc glm data=Adverser_analytical_file;
 	output out=residuals r=resid;
 run;
 quit;
+
+* clear titles/footnotes;
+title;
+footnote;
+
 
 /* 
 Check Assumptions for valid ANOVA:
