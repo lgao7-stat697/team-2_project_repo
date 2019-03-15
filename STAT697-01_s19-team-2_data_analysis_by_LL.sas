@@ -65,6 +65,20 @@ proc sgplot
       yaxis label = 'Number of Days for Adverse Reaction';
       keylegend /title = "Treatment Group";
 run;
+
+proc report data=adverser_analytical_file;
+	columns
+		treatment_group
+  age = age_mean
+  weight = weight_mean
+		sex
+	;
+	define treatment_group / group;
+	define sex / across;
+ define age_mean;
+ define weight_mean;
+run;
+
 title;
 footnote;
 
