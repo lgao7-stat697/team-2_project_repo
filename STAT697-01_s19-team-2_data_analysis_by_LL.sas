@@ -121,17 +121,15 @@ my regression.
 Followup Steps: I think I would want to explore more on my model
 or possibly involve interaction within my model.
 ;
-ods html close;
-ods listing close;
 
 proc glmmod
       data = adverser_analytical_file
       outdesign = adverser_analytical_file_2
-      outparm= GLMParm;
+      outparm= GLMParm
+      noprint;
       class sex;
       model adr_duration =  day_on_drug age weight sex;
 run;
-ods html;
 
 proc reg 
       data = adverser_analytical_file_2;
