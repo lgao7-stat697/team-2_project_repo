@@ -38,7 +38,7 @@ footnote3
 'I think it might have to do with ones physical measurements either their
  weight, age or perhaps their sex. Perhaps there is a sweet spot that 
  these individuals fall under that could help eliminate outliers in 
- further studies.'
+ further studies.';
 
 *
 Note: This compares the column Day_On_Drug and ADR_Duration with 
@@ -95,16 +95,16 @@ title2
 
 footnote1
 'Here we see the parameter estimates table and find that day on drug is the
- only significant factor within our regression test.'
+ only significant factor within our regression test.';
 
 footnote2
 'I find this to be interesting since from our initial distribution we saw 
  that some people would have a very adverse reaction within just a couple
- of days while others would have a low reaction from a long usage time.'
+ of days while others would have a low reaction from a long usage time.';
 
 footnote3
 'I am not sure what to make of these findings but I hope to see if our
- other test will align with similar findings.'
+ other test will align with similar findings.';
 
 *
 Note: This compares the column ADR_duration from Placebo and Treatment to the 
@@ -121,17 +121,15 @@ my regression.
 Followup Steps: I think I would want to explore more on my model
 or possibly involve interaction within my model.
 ;
-ods html close;
-ods listing close;
 
 proc glmmod
       data = adverser_analytical_file
       outdesign = adverser_analytical_file_2
-      outparm= GLMParm;
+      outparm= GLMParm
+      noprint;
       class sex;
       model adr_duration =  day_on_drug age weight sex;
 run;
-ods html;
 
 proc reg 
       data = adverser_analytical_file_2;
